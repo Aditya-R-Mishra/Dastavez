@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ReactMarkdown from 'react-markdown'
-import { Send, FileText, ChevronDown, Sparkles, Bot, User, Plus, MessageSquare, Mic, MicOff, Globe2 } from 'lucide-react'
+import { Send, FileText, ChevronDown, Sparkles, Bot, User, Plus, MessageSquare, Mic, MicOff, Globe2, Paperclip, Loader2, CheckCircle, X } from 'lucide-react'
 import Logo from '../components/Logo'
 
 // ── Dummy conversations ───────────────────────────────────────────────────────
@@ -253,6 +253,24 @@ const Chat = () => {
   const [activeConvId, setActiveConvId] = useState(CONVERSATIONS[0].id)
   const bottomRef                 = useRef(null)
   const textareaRef               = useRef(null)
+  const fileInputRef              = useRef(null)
+
+  // File attach state
+  const [attachedFile, setAttachedFile] = useState(null)
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setAttachedFile({ name: file.name, isUploading: true })
+    setTimeout(() => {
+      setAttachedFile((prev) => (prev ? { ...prev, isUploading: false } : null))
+    }, 2500)
+    e.target.value = ''
+  }
+
+  const handleRemoveFile = () => {
+    setAttachedFile(null)
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -261,13 +279,14 @@ const Chat = () => {
   const sendMessage = (e) => {
     e?.preventDefault()
     const trimmed = input.trim()
-    if (!trimmed) return
+    if (!trimmed && !attachedFile) return
 
     setMessages((prev) => [
       ...prev,
-      { id: Date.now(), role: 'user', text: trimmed },
+      { id: Date.now(), role: 'user', text: trimmed || (attachedFile ? `[Attached File: ${attachedFile.name}]` : '') },
     ])
     setInput('')
+    setAttachedFile(null)
 
     setIsTyping(true)
     setTimeout(() => setIsTyping(false), 2000)
@@ -311,6 +330,7 @@ const Chat = () => {
     setMessages([])
     setActiveConvId(null)
     setInput('')
+    setAttachedFile(null)
   }
 
   return (
@@ -328,7 +348,7 @@ const Chat = () => {
 
         {/* ── Header ───────────────────────────────────────────────────────── */}
         <div className="flex items-center gap-3 px-6 py-4 border-b border-navy-700 bg-navy-950/90 backdrop-blur shrink-0">
-          <Logo size="sm" showText={false} />
+          <Logo size="md" showText={false} />
           <div>
             <h1 className="text-sm font-semibold text-white">Dastavez Chat</h1>
             <p className="text-xs text-gray-500">Ask anything about your documents</p>
@@ -386,6 +406,43 @@ const Chat = () => {
         <div className="shrink-0 border-t border-navy-700 bg-navy-950/90 backdrop-blur px-4 md:px-10 py-4">
           <div className="max-w-3xl mx-auto">
 
+            {/* Uploading / Attached file chip */}
+            <AnimatePresence>
+              {attachedFile && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 4 }}
+                  transition={{ duration: 0.2 }}
+                  className="mb-2.5 flex items-center justify-between bg-navy-800 border border-navy-700 rounded-lg px-3 py-1.5 text-sm text-gray-200 shadow-sm"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText size={15} className="text-brand-400 shrink-0" />
+                    <span className="font-medium truncate max-w-xs text-gray-200">{attachedFile.name}</span>
+                    {attachedFile.isUploading ? (
+                      <span className="flex items-center gap-1.5 text-xs text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-0.5 rounded-full shrink-0 ml-1">
+                        <Loader2 size={12} className="animate-spin text-amber-400 shrink-0" />
+                        Uploading...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 text-xs text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2 py-0.5 rounded-full shrink-0 ml-1">
+                        <CheckCircle size={12} className="text-emerald-400 shrink-0" />
+                        Ready
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveFile}
+                    title="Remove file"
+                    className="ml-2 text-gray-400 hover:text-white p-0.5 rounded-md hover:bg-navy-700 transition-colors duration-200 cursor-pointer"
+                  >
+                    <X size={15} />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Detected language badge */}
             <AnimatePresence>
               {detectedLang && (
@@ -437,6 +494,25 @@ const Chat = () => {
               onSubmit={sendMessage}
               className="flex items-end gap-2"
             >
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+
+              {/* Attach file button (Left of textarea) */}
+              <button
+                id="attach-file-btn"
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                title="Attach document (.pdf, .png, .jpg, .jpeg)"
+                className="flex items-center justify-center w-11 h-11 rounded-xl bg-navy-900 border border-navy-700 hover:border-brand-500/50 hover:bg-navy-800 text-gray-400 hover:text-white transition-all duration-200 shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              >
+                <Paperclip size={17} />
+              </button>
               <div className="flex-1 relative">
                 <textarea
                   ref={textareaRef}

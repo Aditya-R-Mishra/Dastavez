@@ -25,7 +25,7 @@ const AppLayout = () => {
       <aside className="flex flex-col w-60 min-w-[15rem] bg-navy-900 border-r border-navy-700">
         {/* Logo */}
         <div className="flex items-center px-5 py-5 border-b border-navy-700">
-          <Logo size="md" />
+          <Logo size="lg" />
         </div>
 
         {/* Nav */}
