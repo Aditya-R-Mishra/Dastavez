@@ -8,6 +8,7 @@ import {
   Bot,
   ShieldCheck,
 } from 'lucide-react'
+import Logo from '../components/Logo'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -43,8 +44,8 @@ const Login = () => {
         .login-page-wrapper {
           min-height: 100vh;
           width: 100vw;
-          background: #090d16;
-          background: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
+          background: #070B14;
+          background: radial-gradient(circle at 50% 50%, #0D1524 0%, #070B14 100%);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -55,13 +56,13 @@ const Login = () => {
         }
 
         .sliding-container {
-          background-color: #111827;
-          border: 1px solid #1f2937;
+          background-color: #0D1524;
+          border: 1px solid #162238;
           border-radius: 30px;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.25);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(37, 99, 235, 0.2);
           position: relative;
           overflow: hidden;
-          width: 820px;
+          width: 840px;
           max-width: 100%;
           min-height: 520px;
         }
@@ -80,7 +81,7 @@ const Login = () => {
         }
 
         .sliding-container a.forgot-link {
-          color: #818cf8;
+          color: #3B82F6;
           font-size: 13px;
           text-decoration: none;
           margin: 10px 0 6px;
@@ -88,11 +89,11 @@ const Login = () => {
         }
 
         .sliding-container a.forgot-link:hover {
-          color: #a5b4fc;
+          color: #60A5FA;
         }
 
         .sliding-container button.action-btn {
-          background-color: #4f46e5;
+          background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
           color: #ffffff;
           font-size: 13px;
           padding: 12px 45px;
@@ -104,31 +105,17 @@ const Login = () => {
           margin-top: 10px;
           cursor: pointer;
           transition: all 0.25s ease;
-          box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+          box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
         }
 
         .sliding-container button.action-btn:hover {
-          background-color: #4338ca;
+          background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
           transform: translateY(-1px);
-          box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
-        }
-
-        /* Overlay toggle outline button (renamed from .hidden to avoid Tailwind v4 collision) */
-        .sliding-container button.toggle-btn-outline {
-          background-color: transparent !important;
-          border: 1.5px solid #ffffff !important;
-          color: #ffffff !important;
-          box-shadow: none !important;
-          display: inline-block !important;
-        }
-
-        .sliding-container button.toggle-btn-outline:hover {
-          background-color: rgba(255, 255, 255, 0.15) !important;
-          transform: translateY(-1px);
+          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
         }
 
         .sliding-container form {
-          background-color: #111827;
+          background-color: #0D1524;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -146,8 +133,8 @@ const Login = () => {
         }
 
         .sliding-container input {
-          background-color: #1f2937;
-          border: 1px solid #374151;
+          background-color: #111B2B;
+          border: 1px solid #162238;
           color: #f3f4f6;
           margin: 6px 0;
           padding: 11px 15px;
@@ -159,8 +146,8 @@ const Login = () => {
         }
 
         .sliding-container input:focus {
-          border-color: #6366f1;
-          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+          border-color: #2563EB;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
         }
 
         .form-container {
@@ -212,22 +199,22 @@ const Login = () => {
         }
 
         .social-icons .icon-badge {
-          border: 1px solid #374151;
-          background-color: #1f2937;
+          border: 1px solid #162238;
+          background-color: #111B2B;
           border-radius: 12px;
           display: inline-flex;
           justify-content: center;
           align-items: center;
           width: 40px;
           height: 40px;
-          color: #818cf8;
+          color: #3B82F6;
           transition: all 0.2s;
         }
 
         .social-icons .icon-badge:hover {
-          border-color: #6366f1;
-          background-color: rgba(99, 102, 241, 0.15);
-          color: #a5b4fc;
+          border-color: #2563EB;
+          background-color: rgba(37, 99, 235, 0.15);
+          color: #60A5FA;
           transform: translateY(-2px);
         }
 
@@ -249,7 +236,7 @@ const Login = () => {
         }
 
         .toggle {
-          background: linear-gradient(135deg, #4f46e5 0%, #4338ca 50%, #3730a3 100%);
+          background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #0F172A 100%);
           color: #ffffff;
           position: relative;
           left: -100%;
@@ -281,13 +268,15 @@ const Login = () => {
         .toggle-panel h1 {
           font-size: 26px;
           font-weight: 700;
-          margin-bottom: 6px;
+          margin-bottom: 12px;
           color: #ffffff;
+          line-height: 1.3;
         }
 
         .toggle-panel p {
-          color: #e0e7ff !important;
-          font-size: 13px;
+          color: #DBEAFE !important;
+          font-size: 13.5px;
+          line-height: 1.6;
         }
 
         .toggle-left {
@@ -307,73 +296,6 @@ const Login = () => {
           transform: translateX(200%);
         }
 
-        /* Role Selection Styling */
-        .role-dropdown-container {
-          width: 100%;
-          position: relative;
-          margin: 6px 0;
-        }
-
-        .role-display-button {
-          background-color: #1f2937 !important;
-          color: #9ca3af !important;
-          border: 1px solid #374151 !important;
-          width: 100%;
-          padding: 11px 15px !important;
-          font-size: 13px !important;
-          border-radius: 10px !important;
-          font-weight: 400 !important;
-          text-transform: none !important;
-          text-align: left;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          transition: all 0.2s;
-        }
-
-        .role-display-button.selected {
-          font-weight: 600 !important;
-          color: #f3f4f6 !important;
-          border-color: #6366f1 !important;
-        }
-
-        .role-options {
-          position: absolute;
-          top: calc(100% + 4px);
-          left: 0;
-          width: 100%;
-          background-color: #1f2937;
-          border: 1px solid #4f46e5;
-          border-radius: 10px;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-          z-index: 100;
-          padding: 6px;
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .role-options button {
-          background-color: transparent !important;
-          color: #d1d5db !important;
-          border: none !important;
-          width: 100%;
-          padding: 9px 12px !important;
-          font-size: 13px !important;
-          text-transform: none !important;
-          text-align: left;
-          border-radius: 6px !important;
-          margin-top: 0 !important;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-
-        .role-options button:hover {
-          background-color: #374151 !important;
-          color: #818cf8 !important;
-        }
-
         .switch-prompt {
           font-size: 12px;
           color: #9ca3af;
@@ -383,7 +305,7 @@ const Login = () => {
         .switch-prompt button {
           background: none;
           border: none;
-          color: #818cf8;
+          color: #3B82F6;
           font-weight: 600;
           cursor: pointer;
           margin-left: 4px;
@@ -391,7 +313,7 @@ const Login = () => {
         }
 
         .switch-prompt button:hover {
-          color: #a5b4fc;
+          color: #60A5FA;
         }
       `}</style>
 
@@ -399,12 +321,11 @@ const Login = () => {
         {/* ── Registration Form (Sign-up) ─────────────────────────────────── */}
         <div className="form-container sign-up">
           <form onSubmit={handleRegisterSubmit}>
-            <div className="flex items-center gap-2 mb-1">
-              <img src="/logo.png" alt="Dastavez Logo" className="w-8 h-8 object-contain rounded-lg drop-shadow" />
-              <span className="text-base font-bold text-white tracking-wider">DASTAVEZ</span>
+            <div className="mb-2">
+              <Logo size="sm" />
             </div>
 
-            <h1>SIGN UP</h1>
+            <h1>Create your Dastavez account</h1>
 
             <div className="social-icons">
               <span className="icon-badge" title="Document Processing">
@@ -437,7 +358,7 @@ const Login = () => {
             />
 
             <button type="submit" className="action-btn">
-              SIGN UP
+              CREATE ACCOUNT
             </button>
 
             <p className="switch-prompt">
@@ -452,12 +373,11 @@ const Login = () => {
         {/* ── Login Form (Sign-in) ────────────────────────────────────────── */}
         <div className="form-container sign-in">
           <form onSubmit={handleLoginSubmit}>
-            <div className="flex items-center gap-2 mb-1">
-              <img src="/logo.png" alt="Dastavez Logo" className="w-8 h-8 object-contain rounded-lg drop-shadow" />
-              <span className="text-base font-bold text-white tracking-wider">DASTAVEZ</span>
+            <div className="mb-2">
+              <Logo size="sm" />
             </div>
 
-            <h1>Login</h1>
+            <h1>Welcome back</h1>
 
             <div className="social-icons">
               <span className="icon-badge" title="AI Assistant">
@@ -511,22 +431,16 @@ const Login = () => {
         {/* ── Sliding Toggle Container ────────────────────────────────────── */}
         <div className="toggle-container">
           <div className="toggle">
-            {/* Panel visible when showing the LOGIN form (sign-in) */}
+            {/* Left overlay panel (evergreen copy) */}
             <div className="toggle-panel toggle-left">
-              <h1>Welcome Back!</h1>
-              <p>Access your Dastavez document intelligence dashboard &amp; AI chat search</p>
-              <button type="button" className="action-btn toggle-btn-outline" onClick={handleLoginClick}>
-                Login
-              </button>
+              <h1>Your documents. One intelligent workspace.</h1>
+              <p>Upload documents, search across sources, and get evidence-backed answers with AI.</p>
             </div>
 
-            {/* Panel visible when showing the REGISTER form (sign-up) */}
+            {/* Right overlay panel (evergreen copy) */}
             <div className="toggle-panel toggle-right">
-              <h1>Welcome to Dastavez!</h1>
-              <p>Smart Document Intelligence, Regional Language Search &amp; RAG Answers</p>
-              <button type="button" className="action-btn toggle-btn-outline" onClick={handleRegisterClick}>
-                SIGN UP
-              </button>
+              <h1>Your documents. One intelligent workspace.</h1>
+              <p>Upload documents, search across sources, and get evidence-backed answers with AI.</p>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, FileText, MessageSquare, Zap } from 'lucide-react'
+import { Home, FileText, MessageSquare } from 'lucide-react'
+import Logo from './Logo'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: Home },
@@ -19,13 +20,12 @@ const AppLayout = () => {
   const location = useLocation()
 
   return (
-    <div className="flex h-screen bg-gray-950 text-gray-100 overflow-hidden">
+    <div className="flex h-screen bg-navy-950 text-gray-100 overflow-hidden">
       {/* ── Sidebar ── */}
-      <aside className="flex flex-col w-60 min-w-[15rem] bg-gray-900 border-r border-gray-800">
+      <aside className="flex flex-col w-60 min-w-[15rem] bg-navy-900 border-r border-navy-700">
         {/* Logo */}
-        <div className="flex items-center gap-3 px-5 py-5 border-b border-gray-800">
-          <img src="/logo.png" alt="Dastavez Logo" className="w-8 h-8 object-contain rounded-lg drop-shadow-md" />
-          <span className="text-lg font-bold tracking-tight text-white">Dastavez</span>
+        <div className="flex items-center px-5 py-5 border-b border-navy-700">
+          <Logo size="md" />
         </div>
 
         {/* Nav */}
@@ -37,10 +37,10 @@ const AppLayout = () => {
               className={({ isActive }) =>
                 [
                   'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
-                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500',
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800',
+                    ? 'bg-gradient-to-r from-brand-500 to-brand-400 text-white shadow-md shadow-brand-500/25 font-semibold'
+                    : 'text-gray-400 hover:text-white hover:bg-navy-800',
                 ].join(' ')
               }
             >
@@ -58,8 +58,8 @@ const AppLayout = () => {
         </nav>
 
         {/* Footer */}
-        <div className="px-5 py-4 border-t border-gray-800">
-          <p className="text-xs text-gray-600">DocIntel v1.0</p>
+        <div className="px-5 py-4 border-t border-navy-700">
+          <p className="text-xs text-gray-500">Dastavez v1.0</p>
         </div>
       </aside>
 
