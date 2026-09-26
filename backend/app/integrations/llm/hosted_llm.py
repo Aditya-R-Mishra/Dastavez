@@ -1,5 +1,6 @@
 """Hosted LLM provider implementation supporting OpenAI-compatible APIs (OpenAI, Gemini, Groq)."""
 
+import asyncio
 from typing import List, Optional
 import httpx
 
@@ -45,27 +46,43 @@ class HostedLLMProvider(BaseLLMProvider):
             "max_tokens": max_tokens,
         }
 
-        try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.post(endpoint, json=payload, headers=headers)
-                if response.status_code != 200:
-                    logger.error(
-                        "LLM API returned error status %d: %s",
-                        response.status_code,
-                        response.text,
-                    )
-                    raise ExternalServiceError(
-                        service_name="Hosted LLM",
-                        reason=f"Status {response.status_code}: {response.text}",
-                    )
+        retries = 3
+        delay = 2.0
+        last_error = ""
 
-                data = response.json()
-                choices = data.get("choices", [])
-                if not choices:
-                    raise ExternalServiceError("Hosted LLM", "No choices returned in API response")
+        for attempt in range(1, retries + 1):
+            try:
+                async with httpx.AsyncClient(timeout=self.timeout) as client:
+                    response = await client.post(endpoint, json=payload, headers=headers)
+                    if response.status_code == 200:
+                        data = response.json()
+                        choices = data.get("choices", [])
+                        if not choices:
+                            raise ExternalServiceError("Hosted LLM", "No choices returned in API response")
+                        return choices[0]["message"]["content"]
 
-                return choices[0]["message"]["content"]
+                    last_error = f"Status {response.status_code}: {response.text}"
+                    if response.status_code in (429, 503) and attempt < retries:
+                        logger.warning(
+                            "LLM returned transient status %d on attempt %d/%d; retrying in %.1fs...",
+                            response.status_code,
+                            attempt,
+                            retries,
+                            delay,
+                        )
+                        await asyncio.sleep(delay)
+                        delay *= 2
+                        continue
 
-        except httpx.RequestError as exc:
-            logger.error("HTTP network failure connecting to LLM provider: %s", str(exc))
-            raise ExternalServiceError("Hosted LLM", str(exc)) from exc
+                    logger.error("LLM API returned error status %d: %s", response.status_code, response.text)
+                    raise ExternalServiceError(service_name="Hosted LLM", reason=last_error)
+
+            except httpx.RequestError as exc:
+                if attempt < retries:
+                    await asyncio.sleep(delay)
+                    delay *= 2
+                    continue
+                logger.error("HTTP network failure connecting to LLM provider: %s", str(exc))
+                raise ExternalServiceError("Hosted LLM", str(exc)) from exc
+
+        raise ExternalServiceError("Hosted LLM", reason=last_error)

@@ -72,6 +72,7 @@ class DocumentChunker:
                         "page": page_number,
                         "filename": filename or "",
                         "section": current_section,
+                        "content": chunk_content,
                         "language": language or "en",
                     },
                 })
@@ -106,6 +107,7 @@ class DocumentChunker:
                     "page": page_number,
                     "filename": filename or "",
                     "section": current_section,
+                    "content": chunk_content,
                     "language": language or "en",
                 },
             })

@@ -13,23 +13,35 @@ _qdrant_client = None
 
 
 def get_qdrant_client():
-    """Retrieve or initialize the singleton QdrantClient instance."""
+    """Retrieve or initialize the singleton QdrantClient instance with embedded fallback."""
     global _qdrant_client
     if _qdrant_client is None:
-        try:
-            from qdrant_client import QdrantClient
+        from qdrant_client import QdrantClient
 
+        if settings.QDRANT_URL == ":memory:":
+            _qdrant_client = QdrantClient(location=":memory:")
+            logger.info("Initialized in-memory Qdrant instance")
+            return _qdrant_client
+
+        try:
             kwargs: Dict[str, Any] = {
                 "url": settings.QDRANT_URL,
                 "check_compatibility": False,
+                "timeout": 3.0,
             }
             if settings.QDRANT_API_KEY and settings.QDRANT_API_KEY != "your-qdrant-api-key":
                 kwargs["api_key"] = settings.QDRANT_API_KEY
-            _qdrant_client = QdrantClient(**kwargs)
+            client = QdrantClient(**kwargs)
+            client.get_collections()
+            _qdrant_client = client
             logger.info("Connected to Qdrant at %s", settings.QDRANT_URL)
         except Exception as exc:
-            logger.error("Failed to initialize Qdrant client: %s", str(exc))
-            raise ExternalServiceError("Qdrant", str(exc)) from exc
+            logger.warning(
+                "Remote Qdrant at %s unreachable (%s). Falling back to embedded local storage (./local_qdrant_data)",
+                settings.QDRANT_URL,
+                str(exc),
+            )
+            _qdrant_client = QdrantClient(path="./local_qdrant_data")
     return _qdrant_client
 
 
@@ -94,6 +106,14 @@ class QdrantVectorClient:
                 ]
             )
 
+        if hasattr(self.client, "query_points"):
+            res = self.client.query_points(
+                collection_name=self.collection_name,
+                query=query_vector,
+                query_filter=search_filter,
+                limit=limit,
+            )
+            return res.points
         return self.client.search(
             collection_name=self.collection_name,
             query_vector=query_vector,

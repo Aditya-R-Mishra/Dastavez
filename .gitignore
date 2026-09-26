@@ -30,6 +30,9 @@ ENV/
 .env
 !.env.example
 
+# Local Data Storage
+local_qdrant_data/
+
 # Testing & Coverage
 .pytest_cache/
 .coverage
@@ -40,3 +43,14 @@ htmlcov/
 .idea/
 .DS_Store
 *.swp
+
+# Node & Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+

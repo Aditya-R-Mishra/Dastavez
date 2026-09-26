@@ -198,11 +198,14 @@ class DocumentProcessingWorker:
 
                 points = []
                 for chunk, vector in zip(all_chunks, embeddings):
+                    payload = dict(chunk.get("metadata", {}))
+                    payload["content"] = chunk["content"]
+                    payload["document_id"] = document_id
                     points.append(
                         PointStruct(
                             id=chunk["chunk_id"],
                             vector=vector,
-                            payload=chunk["metadata"],
+                            payload=payload,
                         )
                     )
 

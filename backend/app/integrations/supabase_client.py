@@ -34,14 +34,38 @@ class SupabaseAuthClient:
         self.client = client or get_supabase_client()
 
     async def sign_up(self, email: str, password: str, metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        """Register a new user with Supabase Auth."""
+        """Register a new user with Supabase Auth, ensuring immediate email confirmation and session token."""
         try:
+            # 1. Attempt admin creation with auto-confirmed email if service role is active
+            if hasattr(self.client.auth, "admin") and hasattr(self.client.auth.admin, "create_user"):
+                try:
+                    admin_res = self.client.auth.admin.create_user({
+                        "email": email,
+                        "password": password,
+                        "email_confirm": True,
+                        "user_metadata": metadata or {},
+                    })
+                    if admin_res and admin_res.user:
+                        # Immediately sign in to obtain access token
+                        return await self.sign_in_with_password(email=email, password=password)
+                except Exception as admin_exc:
+                    logger.info("Admin create_user fallback to standard sign_up: %s", str(admin_exc))
+
+            # 2. Standard sign-up fallback
             options: Dict[str, Any] = {}
             if metadata:
                 options["data"] = metadata
             response = self.client.auth.sign_up({"email": email, "password": password, "options": options})
             user = response.user
             session = response.session
+
+            if not session:
+                # Try signing in immediately if user was already confirmed or auto-confirmed
+                try:
+                    return await self.sign_in_with_password(email=email, password=password)
+                except Exception:
+                    pass
+
             return {
                 "user_id": str(user.id) if user else "",
                 "email": user.email if user else email,
