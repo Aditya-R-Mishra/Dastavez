@@ -145,6 +145,28 @@ const Login = () => {
           box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
         }
 
+        .sliding-container button.toggle-btn-outline {
+          background-color: transparent !important;
+          border: 1.5px solid #ffffff !important;
+          color: #ffffff !important;
+          box-shadow: none !important;
+          display: inline-block !important;
+          margin-top: 16px !important;
+          padding: 10px 42px !important;
+          border-radius: 10px !important;
+          font-weight: 600 !important;
+          letter-spacing: 0.8px !important;
+          text-transform: uppercase !important;
+          cursor: pointer !important;
+          transition: all 0.25s ease !important;
+        }
+
+        .sliding-container button.toggle-btn-outline:hover {
+          background-color: rgba(255, 255, 255, 0.2) !important;
+          transform: translateY(-1px) !important;
+          box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
+        }
+
         .sliding-container form {
           background-color: #0D1524;
           display: flex;
@@ -352,8 +374,8 @@ const Login = () => {
         {/* ── Registration Form (Sign-up) ─────────────────────────────────── */}
         <div className="form-container sign-up">
           <form onSubmit={handleRegisterSubmit}>
-            <div className="mb-2">
-              <Logo size="sm" />
+            <div className="mb-3">
+              <Logo size="lg" />
             </div>
 
             <h1>Create your Dastavez account</h1>
@@ -404,8 +426,8 @@ const Login = () => {
         {/* ── Login Form (Sign-in) ────────────────────────────────────────── */}
         <div className="form-container sign-in">
           <form onSubmit={handleLoginSubmit}>
-            <div className="mb-2">
-              <Logo size="sm" />
+            <div className="mb-3">
+              <Logo size="lg" />
             </div>
 
             <h1>Welcome back</h1>
@@ -462,16 +484,22 @@ const Login = () => {
         {/* ── Sliding Toggle Container ────────────────────────────────────── */}
         <div className="toggle-container">
           <div className="toggle">
-            {/* Left overlay panel (evergreen copy) */}
+            {/* Left overlay panel (visible when showing Sign Up form) */}
             <div className="toggle-panel toggle-left">
-              <h1>Your documents. One intelligent workspace.</h1>
-              <p>Upload documents, search across sources, and get evidence-backed answers with AI.</p>
+              <h1>Welcome Back!</h1>
+              <p>Access your Dastavez document intelligence dashboard &amp; AI chat search</p>
+              <button type="button" className="action-btn toggle-btn-outline" onClick={handleLoginClick}>
+                LOGIN
+              </button>
             </div>
 
-            {/* Right overlay panel (evergreen copy) */}
+            {/* Right overlay panel (visible when showing Login form) */}
             <div className="toggle-panel toggle-right">
-              <h1>Your documents. One intelligent workspace.</h1>
+              <h1>Welcome to Dastavez!</h1>
               <p>Upload documents, search across sources, and get evidence-backed answers with AI.</p>
+              <button type="button" className="action-btn toggle-btn-outline" onClick={handleRegisterClick}>
+                SIGN UP
+              </button>
             </div>
           </div>
         </div>

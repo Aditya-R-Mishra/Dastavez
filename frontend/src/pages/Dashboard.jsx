@@ -166,7 +166,7 @@ const Dashboard = () => {
             Upload New Document
           </h2>
           <p className="text-sm text-gray-400 leading-relaxed">
-            Upload PDFs, scanned forms, images, or documents. Dastavez parses text & tables, generates dense vectors, and indexes them for multi-source RAG.
+            Upload PDFs, scanned forms, images, or documents. Dastavez parses text &amp; tables, generates dense vectors, and indexes them for multi-source RAG.
           </p>
           <div className="mt-4 flex items-center gap-1.5 text-xs font-medium text-brand-400
             group-hover:text-cyan-400 transition-colors">
@@ -175,7 +175,7 @@ const Dashboard = () => {
           </div>
         </button>
 
-        {/* Start chatting */}
+        {/* Start chat */}
         <button
           onClick={() => navigate('/chat')}
           className="group text-left bg-navy-900 border border-navy-700 rounded-xl p-6
@@ -228,7 +228,6 @@ const Dashboard = () => {
             {documents.slice(0, 5).map((doc) => {
               const isCompleted = doc.status === 'COMPLETED'
               const isProcessing = doc.status === 'PROCESSING' || doc.status === 'PENDING'
-              const isFailed = doc.status === 'FAILED'
 
               const dotColor = isCompleted
                 ? 'bg-emerald-400'

@@ -33,7 +33,7 @@ const AppLayout = () => {
       <aside className="flex flex-col w-60 min-w-[15rem] bg-navy-900 border-r border-navy-700">
         {/* Logo */}
         <div className="flex items-center px-5 py-5 border-b border-navy-700">
-          <Logo size="md" />
+          <Logo size="lg" />
         </div>
 
         {/* Nav */}
@@ -81,7 +81,7 @@ const AppLayout = () => {
           <button
             onClick={handleLogout}
             title="Log out"
-            className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+            className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
           >
             <LogOut size={16} />
           </button>
